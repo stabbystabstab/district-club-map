@@ -1,25 +1,51 @@
+var mapSelector = "#district-club-map";
+
 $(document).ready(function () {
+    getClubInfo();
     createAndShowMap();
 });
 
 function createAndShowMap() {
-    getClubInformation();
+    $(mapSelector).html('<div>', { id: 'googleMap',
+                                   style: 'width:100%;height:100%' });
 }
-
-function getClubInformation() {
+var clubInfo;
+function getClubInfo() {
+    console.log('getting club info');
+    var url = 'https://www.toastmasters.org/api/sitecore/FindAClub/Search'
     $.get(
-        url: "https://www.toastmasters.org/api/sitecore/FindAClub/Search",
-        data: {
-            district : DistrictClubMap.options.district,
-            advanced : 1,
-            latitude : 1, // breaks when zero or missing
-            longitude : 1, //breaks when zero or missing
-        }
-    }
-);
-    var toastmastersAPIcall="https://www.toastmasters.org/api/sitecore/FindAClub/Search?district=73&advanced=1&latitude=1&longitude=1"
+        DistrictClubMap.corsProxy + url,
+        {
+            district: DistrictClubMap.district,
+            advanced: 1,
+            latitude: 1, // breaks when zero or missing
+            longitude: 1, // breaks when zero or missing
+        },
+        function(data) {
+            console.log('Club information retrieved for District ' + DistrictClubMap.district);
+            clubInfo = data;
+            console.log('yaya! we got the club info');
+        },
+        'json'
+    );
 }
 
-var DistrictClubMap.options = {
-    district : null
+var DistrictClubMap = {
+        district : null,
+        corsProxy: 'https://cors-anywhere.herokuapp.com/'
+};
+
+
+function clubMap() {
+    var mapCenter = getCenter(clubInfo);
+    var mapProperties = {
+        center: new google.maps.LatLng(mapCenter.latitude, mapCenter.longitude),
+        zoom: 3
+    }
+    var map = new google.maps.Map($('#district-club-map'), mapProperties);
+}
+
+function getCenter() {
+    return { latitude: -25, longitude: 133 };
+
 }
