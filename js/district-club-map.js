@@ -1,28 +1,46 @@
-var mapSelector = "#district-club-map";
+var mapSelector = '#district-club-map';
+
+
+DistrictClubMap.prototype = {
+    googleMapsAPIKey: null,
+    district : null,
+    corsProxy: 'https://cors-anywhere.herokuapp.com/'
+};
+
+
+function DistrictClubMap() {}
+
+
+var params
+function setMapParameters(mapParams) {
+    params = mapParams;
+}
+
 
 $(document).ready(function () {
     getClubInfo();
-    createAndShowMap();
+    $('body').append(
+        $('<script>', {
+            src:'https://maps.googleapis.com/maps/api/js?key='
+                + params.googleMapsAPIKey
+                + '&callback=clubMap'}));
 });
 
-function createAndShowMap() {
-    $(mapSelector).html('<div>', { id: 'googleMap',
-                                   style: 'width:100%;height:100%' });
-}
+
 var clubInfo;
 function getClubInfo() {
     console.log('getting club info');
     var url = 'https://www.toastmasters.org/api/sitecore/FindAClub/Search'
     $.get(
-        DistrictClubMap.corsProxy + url,
+        params.corsProxy + url,
         {
-            district: DistrictClubMap.district,
+            district: params.district,
             advanced: 1,
             latitude: 1, // breaks when zero or missing
             longitude: 1, // breaks when zero or missing
         },
         function(data) {
-            console.log('Club information retrieved for District ' + DistrictClubMap.district);
+            console.log('Club information retrieved for District ' + params.district);
             clubInfo = data;
             console.log('yaya! we got the club info');
         },
@@ -30,22 +48,29 @@ function getClubInfo() {
     );
 }
 
-var DistrictClubMap = {
-        district : null,
-        corsProxy: 'https://cors-anywhere.herokuapp.com/'
-};
 
 
 function clubMap() {
     var mapCenter = getCenter(clubInfo);
     var mapProperties = {
         center: new google.maps.LatLng(mapCenter.latitude, mapCenter.longitude),
-        zoom: 3
+        zoom: 5
     }
-    var map = new google.maps.Map($('#district-club-map'), mapProperties);
+    var map = new google.maps.Map($(mapSelector)[0], mapProperties);
+
+    addClubMarkers(map);
 }
 
-function getCenter() {
-    return { latitude: -25, longitude: 133 };
+function addClubMarkers(map) {
+    alert('Adding markers for clubs')
+    for (club in clubInfo.Clubs) {
+        new google.maps.Marker({ position: new google.maps.LatLng(club.latitude, club.longitude) }).setMap(map);
+        alert(club.Identification.Name)
+    }
+}
 
+
+function getCenter(clubInfo) {
+    //TODO: implement this for the given club info
+    return { latitude: -38, longitude: 142 };
 }
