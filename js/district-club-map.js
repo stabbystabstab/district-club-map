@@ -49,23 +49,28 @@ function getClubInfo() {
 }
 
 
-
 function clubMap() {
-    var mapCenter = getCenter(clubInfo);
-    var mapProperties = {
-        center: new google.maps.LatLng(mapCenter.latitude, mapCenter.longitude),
-        zoom: 5
-    }
-    var map = new google.maps.Map($(mapSelector)[0], mapProperties);
+    if (clubInfo !== undefined) {
+        var mapCenter = getCenter(clubInfo);
+        var mapProperties = {
+            center: new google.maps.LatLng(mapCenter.latitude, mapCenter.longitude),
+            zoom: 5
+        }
+        var map = new google.maps.Map($(mapSelector)[0], mapProperties);
 
-    addClubMarkers(map);
+        addClubMarkers(map);
+        return;
+    }
+    setTimeout(clubMap, 1000);
 }
 
+
 function addClubMarkers(map) {
-    alert('Adding markers for clubs')
-    for (club in clubInfo.Clubs) {
-        new google.maps.Marker({ position: new google.maps.LatLng(club.latitude, club.longitude) }).setMap(map);
-        alert(club.Identification.Name)
+    for (var i = 0; i < clubInfo.Clubs.length; i++) {
+        new google.maps.Marker({
+            position: new google.maps.LatLng(clubInfo.Clubs[i].Address.Coordinates.Latitude,
+                                             clubInfo.Clubs[i].Address.Coordinates.Longitude)
+        }).setMap(map);
     }
 }
 
