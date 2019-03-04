@@ -88,13 +88,23 @@ function getCenter(clubInfo) {
     return { latitude: -38, longitude: 142 };
 }
 
-
+var divisionHues = new Map();
+var areaLightnesses = new Map();
 function getColour(club) {
-    getDivisionHue(club);
-    getAreaLightness(club);
+    var hue = getDivisionHue(club);
+    var lightness = 0.5; // getAreaLightness(club);
+    var saturation = 1;
 }
 
-clubColours
+function getDivisionHue(var club) {
+    return divisionHues.get(club.Classification.Division.Name);
+}
+
+function getAreaLightness(var club) {
+    areaLightnesses.get(club.Classification.Area.name);
+}
+
+
 function initialiseColours() {
     if (clubInfo == undefined) {
         log('Cannot initialise colours - no club data');
@@ -102,12 +112,19 @@ function initialiseColours() {
     }
     var divisions = new Map();
     var areas = new Map();
+
+    // DIVISION HUES
     for (var i = 0; i < clubInfo.Clubs.length; i++) {
-        areas.set(clubInfo.Clubs[0].Classification.Area.name, '');
+        //areas.set(clubInfo.Clubs[0].Classification.Area.name, '');
         divisions.set(clubInfo.Clubs[0].Classification.Division.name, '');
     }
+    var divisionCount = divisions.length;
     //count divisions
-        //pick a hue for each divisions
+    for (var i = 0; i < divisions.length; i++) {
+        divisions.set(clubInfo.Clubs[0].Classification.Division.name, i * 360.0/(divisionCount + 1))
+    }
+
+Area areaLightnesses
     //count areas in each division
         //pick a lightness for each area
     // result is a populated list of Map<Division, hue> and Map<Area, saturation>
