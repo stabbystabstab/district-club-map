@@ -8,6 +8,19 @@ DistrictClubMap.prototype = {
 };
 
 
+Division.prototype = {
+    name: null,
+    hue: 0,
+    areas: []
+};
+
+
+Area.prototype = {
+    name: null,
+    lightness: 0
+};
+
+
 function DistrictClubMap() {}
 
 
@@ -30,7 +43,7 @@ $(document).ready(function () {
 var clubInfo;
 function getClubInfo() {
     console.log('getting club info');
-    var url = 'https://www.toastmasters.org/api/sitecore/FindAClub/Search'
+    var url = 'https://www.toastmasters.org/api/sitecore/FindAClub/Search';
     $.get(
         params.corsProxy + url,
         {
@@ -51,6 +64,7 @@ function getClubInfo() {
 
 function clubMap() {
     if (clubInfo !== undefined) {
+        initialiseDistrictData();
         initialiseColours();
         var mapCenter = getCenter(clubInfo);
         var mapProperties = {
@@ -88,20 +102,47 @@ function getCenter(clubInfo) {
     return { latitude: -38, longitude: 142 };
 }
 
-var divisionHues = new Map();
-var areaLightnesses = new Map();
+
 function getColour(club) {
     var hue = getDivisionHue(club);
     var lightness = 0.5; // getAreaLightness(club);
     var saturation = 1;
 }
 
-function getDivisionHue(var club) {
-    return divisionHues.get(club.Classification.Division.Name);
+Division(name) {
+    this.name = name;
 }
 
-function getAreaLightness(var club) {
-    areaLightnesses.get(club.Classification.Area.name);
+Division[] divisions = [];
+Area[] areas = [];
+function initialiseDistrictData() {
+    for (var i = 0; i < clubInfo.Clubs.length; i++) {
+        Division division = new Division();
+        division.name = clubInfo.Clubs[i].Classification.Division.name;
+        Area area = new Area();
+        area.name = clubInfo.Clubs[i].Classification.Area.name;
+        division.add(area);
+        areas.add(area);
+        divisions.add(division;
+    }
+}
+
+function getDivision(name) {
+    for (var i = 0; i < divisions.length; i++) {
+        if (divisions[i].name() == name) {
+            return divisions[i];
+        }
+    }
+    return null;
+}
+
+function getArea(name) {
+    for (var i = 0; i < areas.length; i++) {
+        if (areas[i].name() == name) {
+            return areas[i];
+        }
+    }
+    return null;
 }
 
 
@@ -110,23 +151,15 @@ function initialiseColours() {
         log('Cannot initialise colours - no club data');
         return;
     }
-    var divisions = new Map();
-    var areas = new Map();
 
     // DIVISION HUES
-    for (var i = 0; i < clubInfo.Clubs.length; i++) {
-        //areas.set(clubInfo.Clubs[0].Classification.Area.name, '');
-        divisions.set(clubInfo.Clubs[0].Classification.Division.name, '');
-    }
     var divisionCount = divisions.length;
-    //count divisions
-    for (var i = 0; i < divisions.length; i++) {
-        divisions.set(clubInfo.Clubs[0].Classification.Division.name, i * 360.0/(divisionCount + 1))
+    for (var d = 0; d < divisionCount; d++) {
+        divisions[d].hue = d * 360.0/(divisionCount + 1)
+        var areaCount = divisions[d].areas.length;
+        for (var a = 0; a < areaCount; a++) {
+            divisions[d].areas[a] =
+        }
     }
-
-Area areaLightnesses
-    //count areas in each division
-        //pick a lightness for each area
-    // result is a populated list of Map<Division, hue> and Map<Area, saturation>
 
 }
