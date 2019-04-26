@@ -3,22 +3,21 @@ var mapSelector = '#district-club-map';
 
 DistrictClubMap.prototype = {
     googleMapsAPIKey: null,
-    district : null,
+    district: null,
     corsProxy: 'https://cors-anywhere.herokuapp.com/'
 };
 
 
-Division.prototype = {
-    name: null,
-    hue: 0,
-    areas: []
-};
-
-
-Area.prototype = {
-    name: null,
-    lightness: 0
-};
+// Division.prototype = {
+//     name: null,
+//     hue: 0,
+//     areas: []
+// };
+//
+// Area.prototype = {
+//     name: null,
+//     lightness: 0
+// };
 
 
 function DistrictClubMap() {}
@@ -89,7 +88,7 @@ function addClubMarkers(map) {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 10,
                 fillColor: getColour(clubInfo.Clubs[i]),
-                fillOpacity: 0.6,
+                fillOpacity: 0.75,
                 strokeOpacity: 0.0,
             },
         }).setMap(map);
@@ -104,32 +103,47 @@ function getCenter(clubInfo) {
 
 
 function getColour(club) {
-    var hue = getDivisionHue(club);
-    var lightness = 0.5; // getAreaLightness(club);
-    var saturation = 1;
+    var division = getDivision(club.Classification.Division.Name)
+    var hue = division !== null ? division.hue : 0;
+    var area = getArea(club.Classification.Area.Name)
+    var lightness = area !== null ? area.lightness : 0.5;
+    var saturation = 1 - (1 - lightness)/3 ;
+    return "hsl(" + hue + ", " + saturation * 100 + "%, " + lightness * 100 + "%)";
 }
 
-Division(name) {
+function Division(name) {
     this.name = name;
 }
 
-Division[] divisions = [];
-Area[] areas = [];
+var divisions = new Array();
+var areas = new Array();
 function initialiseDistrictData() {
     for (var i = 0; i < clubInfo.Clubs.length; i++) {
-        Division division = new Division();
-        division.name = clubInfo.Clubs[i].Classification.Division.name;
-        Area area = new Area();
-        area.name = clubInfo.Clubs[i].Classification.Area.name;
-        division.add(area);
-        areas.add(area);
-        divisions.add(division;
+
+        var division;
+        if (getDivision(clubInfo.Clubs[i].Classification.Division.Name) !== null) {
+            division = getDivision(clubInfo.Clubs[i].Classification.Division.Name);
+        } else {
+            division = new Object();
+            division.name = clubInfo.Clubs[i].Classification.Division.Name;
+            division.areas = new Array();
+            divisions.push(division);
+        }
+
+
+        if (getArea(clubInfo.Clubs[i].Classification.Area.Name !== null)) {
+            continue;
+        }
+        var area = new Object();
+        area.name = clubInfo.Clubs[i].Classification.Area.Name;
+        division.areas.push(area);
+        areas.push(area);
     }
 }
 
 function getDivision(name) {
     for (var i = 0; i < divisions.length; i++) {
-        if (divisions[i].name() == name) {
+        if (divisions[i].name == name) {
             return divisions[i];
         }
     }
@@ -138,7 +152,7 @@ function getDivision(name) {
 
 function getArea(name) {
     for (var i = 0; i < areas.length; i++) {
-        if (areas[i].name() == name) {
+        if (areas[i].name == name) {
             return areas[i];
         }
     }
@@ -158,8 +172,7 @@ function initialiseColours() {
         divisions[d].hue = d * 360.0/(divisionCount + 1)
         var areaCount = divisions[d].areas.length;
         for (var a = 0; a < areaCount; a++) {
-            divisions[d].areas[a] =
+            divisions[d].areas[a].lightness = 0.15 + 0.7/areaCount * (a + 1);
         }
     }
-
 }
