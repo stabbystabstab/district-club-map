@@ -54,7 +54,6 @@ function getClubInfo() {
         function(data) {
             console.log('Club information retrieved for District ' + params.district);
             clubInfo = data;
-            console.log('yaya! we got the club info');
         },
         'json'
     );
@@ -132,7 +131,7 @@ function getColour(club) {
     var hue = division !== null ? division.hue : 0;
     var area = getArea(club.Classification.Area.Name)
     var lightness = area !== null ? area.lightness : 0.5;
-    var saturation = 1 - (1 - lightness)/3 ;
+    var saturation = 1 - (1 - lightness)/4 ;
     return "hsl(" + hue + ", " + saturation * 100 + "%, " + lightness * 100 + "%)";
 }
 
@@ -194,10 +193,10 @@ function initialiseColours() {
     // DIVISION HUES
     var divisionCount = divisions.length;
     for (var d = 0; d < divisionCount; d++) {
-        divisions[d].hue = d * 360.0/(divisionCount + 1)
+        divisions[d].hue = d * 360.0/divisionCount;
         var areaCount = divisions[d].areas.length;
         for (var a = 0; a < areaCount; a++) {
-            divisions[d].areas[a].lightness = 0.15 + 0.7/areaCount * (a + 1);
+            divisions[d].areas[a].lightness = 0.1 + 0.6/areaCount * (a + 1);
         }
     }
 }
