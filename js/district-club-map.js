@@ -81,18 +81,43 @@ function clubMap() {
 
 function addClubMarkers(map) {
     for (var i = 0; i < clubInfo.Clubs.length; i++) {
-        new google.maps.Marker({
-            position: new google.maps.LatLng(clubInfo.Clubs[i].Address.Coordinates.Latitude,
-                                             clubInfo.Clubs[i].Address.Coordinates.Longitude),
+        var club = clubInfo.Clubs[i];
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(club.Address.Coordinates.Latitude,
+                                             club.Address.Coordinates.Longitude),
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 10,
+                scale: 12,
                 fillColor: getColour(clubInfo.Clubs[i]),
-                fillOpacity: 0.75,
+                fillOpacity: 0.8,
                 strokeOpacity: 0.0,
+
             },
-        }).setMap(map);
+            label: {
+                color: '#111111',
+                text: parseInt(club.Classification.Area.Name).toString()
+            },
+            infoWindow: new google.maps.InfoWindow({
+                            content: formatForDisplay(club)
+                        })
+        });
+
+        marker.addListener('click', function() {
+            var infoWindowMap = this.infoWindow.getMap();
+            if (infoWindowMap == null || typeof infoWindowMap == "undefined") {
+                this.infoWindow.open(map, this);
+            } else {
+                this.infoWindow.close();
+            }
+        });
+        marker.setMap(map);
     }
+}
+
+
+function formatForDisplay(club) {
+    return club.Identification.Name + ' (' + club.Identification.Id.DisplayFriendlyFormat + ') '
+            + 'Area: ' + club.Classification.Division.Name + club.Classification.Area.Name;
 }
 
 
