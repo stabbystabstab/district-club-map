@@ -1,3 +1,11 @@
+/**
+ * District Club Map
+ * Licenced under the MIT Licence
+ *         Which means you can do whatever you like with this code, as long as you also let other people do whatever they like with whatever you create.
+ * https://github.com/stabbystabstab/district-club-map
+ * @author Matthew Welch
+ */
+
 var mapSelector = '#district-club-map';
 
 
@@ -8,22 +16,12 @@ DistrictClubMap.prototype = {
 };
 
 
-// Division.prototype = {
-//     name: null,
-//     hue: 0,
-//     areas: []
-// };
-//
-// Area.prototype = {
-//     name: null,
-//     lightness: 0
-// };
-
-
 function DistrictClubMap() {}
 
 
 var params
+
+
 function setMapParameters(mapParams) {
     params = mapParams;
 }
@@ -115,8 +113,8 @@ function addClubMarkers(map) {
 
 
 function formatForDisplay(club) {
-    return club.Identification.Name + ' (' + club.Identification.Id.DisplayFriendlyFormat + ') '
-            + 'Area: ' + club.Classification.Division.Name + club.Classification.Area.Name;
+    return club.Identification.Name
+            + ' - <em>Area ' + club.Classification.Division.Name + parseInt(club.Classification.Area.Name).toString() + '</em>&nbsp;';
 }
 
 
@@ -135,9 +133,11 @@ function getColour(club) {
     return "hsl(" + hue + ", " + saturation * 100 + "%, " + lightness * 100 + "%)";
 }
 
+
 function Division(name) {
     this.name = name;
 }
+
 
 var divisions = new Array();
 var areas = new Array();
@@ -165,6 +165,7 @@ function initialiseDistrictData() {
     }
 }
 
+
 function getDivision(name) {
     for (var i = 0; i < divisions.length; i++) {
         if (divisions[i].name == name) {
@@ -173,6 +174,7 @@ function getDivision(name) {
     }
     return null;
 }
+
 
 function getArea(name) {
     for (var i = 0; i < areas.length; i++) {
