@@ -119,8 +119,25 @@ function formatForDisplay(club) {
 
 
 function getCenter(clubInfo) {
-    //TODO: implement this for the given club info
-    return { latitude: -38, longitude: 142 };
+    var longitudeSum = 0;
+    var latitudeSum = 0
+    var count = 0;
+
+    for (var i = 0; i < clubInfo.Clubs.length; i++) {
+        var club = clubInfo.Clubs[i];
+        var _lat = club.Address.Coordinates.Latitude;
+        var _long = club.Address.Coordinates.Longitude
+        if (_lat == 0 && _long == 0) {
+            continue;
+        }
+        latitudeSum += _lat;
+        longitudeSum += _long;
+        count++;
+    }
+    if (count == 0) {
+        return {latitude: 0, longitude: 0};
+    }
+    return {latitude: latitudeSum/count, longitude: longitudeSum/count};
 }
 
 
