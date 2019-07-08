@@ -11,9 +11,8 @@ var mapSelector = '#district-club-map';
 
 DistrictClubMap.prototype = {
     googleMapsAPIKey: null,
-    corsProxy: 'https://cors-anywhere.herokuapp.com/',
     district: null,
-    startingZoom: null
+    corsProxy: 'https://cors-anywhere.herokuapp.com/'
 };
 
 
@@ -66,7 +65,7 @@ function clubMap() {
         var mapCenter = getCenter(clubInfo);
         var mapProperties = {
             center: new google.maps.LatLng(mapCenter.latitude, mapCenter.longitude),
-            zoom: mapParameters.startingZoom == null ? 5 : mapParameters.startingZoom
+            zoom: 5
         }
         var map = new google.maps.Map($(mapSelector)[0], mapProperties);
 
@@ -85,7 +84,7 @@ function addClubMarkers(map) {
                                              club.Address.Coordinates.Longitude),
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 12,
+                scale: 15,
                 fillColor: getColour(clubInfo.Clubs[i]),
                 fillOpacity: 0.8,
                 strokeOpacity: 0.0,
@@ -93,7 +92,7 @@ function addClubMarkers(map) {
             },
             label: {
                 color: '#111111',
-                text: parseInt(club.Classification.Area.Name).toString()
+                text: club.Classification.Division.Name + parseInt(club.Classification.Area.Name).toString()
             },
             infoWindow: new google.maps.InfoWindow({
                             content: formatForDisplay(club)
