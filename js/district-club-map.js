@@ -11,8 +11,9 @@ var mapSelector = '#district-club-map';
 
 DistrictClubMap.prototype = {
     googleMapsAPIKey: null,
+    corsProxy: 'https://cors-anywhere.herokuapp.com/',
     district: null,
-    corsProxy: 'https://cors-anywhere.herokuapp.com/'
+    startingZoom: null
 };
 
 
@@ -65,7 +66,7 @@ function clubMap() {
         var mapCenter = getCenter(clubInfo);
         var mapProperties = {
             center: new google.maps.LatLng(mapCenter.latitude, mapCenter.longitude),
-            zoom: 5
+            zoom: mapParameters.startingZoom == null ? 5 : mapParameters.startingZoom
         }
         var map = new google.maps.Map($(mapSelector)[0], mapProperties);
 
