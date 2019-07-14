@@ -1,5 +1,5 @@
-# district-club-map
-This small JavaScript Project has been created to Toastmasters around the world to visualise how their District is organised geographically.
+# District Club Map
+This small JavaScript Project has been created to help Toastmasters members from around the world visualise how their Toastmasters District is organised geographically.
 
 ## How to Install:
 
