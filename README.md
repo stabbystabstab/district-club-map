@@ -10,7 +10,7 @@ This small JavaScript Project has been created to Toastmasters around the world 
 <div id='district-club-map'></div>
 ```
 
-3. Import any version of jQuery, if your web page doesn't already load one:
+3. Import resource for Google Maps:
 ```html
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 ```
@@ -30,9 +30,9 @@ This small JavaScript Project has been created to Toastmasters around the world 
   setMapParameters(mapParameters);
 ```
 
-5. And you're done.
+And you're done.
 
-6. Example here (it's my book blog, do not read!): http://www.bookninja.org/index.php/toastmasters-club-map-district-73/
+Example here (it's my book blog, do not read!): http://www.bookninja.org/index.php/toastmasters-club-map-district-73/
 
 ## TLDR;
 Copy and paste this, just specify your district and Google Maps API key:
