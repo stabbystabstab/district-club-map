@@ -20,6 +20,8 @@ function DistrictClubMap() {}
 
 
 var params
+var markerDepth = -5000;
+var infoDepth = 5000;
 
 
 function setMapParameters(mapParams) {
@@ -88,10 +90,9 @@ function addClubMarkers(map) {
                 fillColor: getColour(clubInfo.Clubs[i]),
                 fillOpacity: 0.8,
                 strokeOpacity: 0.0,
-
             },
             label: {
-                color: '#111111',
+                color: getAreaLightness(getArea(club.Classification.Area.Name)) < 0.5 ? '#eeeeee' : '#111111',
                 text: club.Classification.Division.Name + parseInt(club.Classification.Area.Name).toString()
             },
             infoWindow: new google.maps.InfoWindow({
@@ -101,8 +102,10 @@ function addClubMarkers(map) {
 
         marker.addListener('click', function() {
             var infoWindowMap = this.infoWindow.getMap();
+            this.setZIndex(markerDepth--);
             if (infoWindowMap == null || typeof infoWindowMap == "undefined") {
                 this.infoWindow.open(map, this);
+                this.infoWindow.setZIndex(infoDepth++);
             } else {
                 this.infoWindow.close();
             }
@@ -145,9 +148,13 @@ function getColour(club) {
     var division = getDivision(club.Classification.Division.Name)
     var hue = division !== null ? division.hue : 0;
     var area = getArea(club.Classification.Area.Name)
-    var lightness = area !== null ? area.lightness : 0.5;
-    var saturation = 1 - (1 - lightness)/4 ;
+    var lightness = getAreaLightness(area);
+    var saturation = 1;
     return "hsl(" + hue + ", " + saturation * 100 + "%, " + lightness * 100 + "%)";
+}
+
+function getAreaLightness(area) {
+    return area !== null ? area.lightness : 0.75;
 }
 
 
@@ -172,7 +179,7 @@ function initialiseDistrictData() {
         }
 
 
-        if (getArea(clubInfo.Clubs[i].Classification.Area.Name !== null)) {
+        if (getArea(clubInfo.Clubs[i].Classification.Area.Name) !== null) {
             continue;
         }
         var area = new Object();
@@ -215,7 +222,7 @@ function initialiseColours() {
         divisions[d].hue = d * 360.0/divisionCount;
         var areaCount = divisions[d].areas.length;
         for (var a = 0; a < areaCount; a++) {
-            divisions[d].areas[a].lightness = 0.1 + 0.6/areaCount * (a + 1);
+            divisions[d].areas[a].lightness = 0.15 + 0.85/areaCount * a;
         }
     }
 }
