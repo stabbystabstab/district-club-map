@@ -55,21 +55,34 @@ ready(() => {
 var clubInfo;
 async function getClubInfo() {
     console.log('getting club info');
-    var url = 'https://www.toastmasters.org/api/sitecore/FindAClub/Search';
-    $.get(
-        params.corsProxy + url,
-        {
-            district: params.district,
-            advanced: 1,
-            latitude: 1, // api breaks when zero or missing
-            longitude: 1, // api breaks when zero or missing
-        },
-        function(data) {
-            console.log('Club information retrieved for District ' + params.district);
-            clubInfo = data;
-        },
-        'json'
-    );
+
+    const url = `${params.corsProxy}https://www.toastmasters.org/api/sitecore/FindAClub/Search`;
+    const body = {
+        district: params.district,
+        advanced: 1,
+        latitude: 1, // api breaks when zero or missing
+        longitude: 1, // api breaks when zero or missing
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (response.status !== 200) {
+            console.error("Error while fetching the club information", response);
+            return;
+        }
+
+        const data = await response.json();
+        console.log('Club information retrieved for District ', params.district);
+        clubInfo = data;
+
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
 }
 
 
