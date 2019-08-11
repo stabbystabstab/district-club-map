@@ -3,13 +3,11 @@
  * Licenced under the MIT Licence
  *         Which means you can do whatever you like with this code, as long as you also let other people do whatever they like with whatever you create.
  * https://github.com/stabbystabstab/district-club-map
- * @author Matthew Welch
+ * @author Matthew Welch - Mount Barker Toastmasters Club (1599760) - District 73
  */
 
-var mapSelector = '#district-club-map';
-
-
 DistrictClubMap.prototype = {
+    elementId: 'district-club-map',
     googleMapsAPIKey: null,
     district: null,
     corsProxy: 'https://cors-anywhere.herokuapp.com/'
@@ -48,8 +46,8 @@ function getClubInfo() {
         {
             district: params.district,
             advanced: 1,
-            latitude: 1, // breaks when zero or missing
-            longitude: 1, // breaks when zero or missing
+            latitude: 1, // api breaks when zero or missing
+            longitude: 1, // api breaks when zero or missing
         },
         function(data) {
             console.log('Club information retrieved for District ' + params.district);
@@ -69,7 +67,7 @@ function clubMap() {
             center: new google.maps.LatLng(mapCenter.latitude, mapCenter.longitude),
             zoom: 5
         }
-        var map = new google.maps.Map($(mapSelector)[0], mapProperties);
+        var map = new google.maps.Map(document.getElementById(params.elementId), mapProperties);
 
         addClubMarkers(map);
         return;
@@ -92,8 +90,8 @@ function addClubMarkers(map) {
                 strokeOpacity: 0.0,
             },
             label: {
-                color: getAreaLightness(getArea(club.Classification.Area.Name)) < 0.5 ? '#eeeeee' : '#111111',
-                text: club.Classification.Division.Name + parseInt(club.Classification.Area.Name).toString()
+                color: getAreaLightness(getArea(getAreaName(club))) < 0.5 ? '#eeeeee' : '#111111',
+                text: getAreaName(club)
             },
             infoWindow: new google.maps.InfoWindow({
                             content: formatForDisplay(club)
@@ -117,7 +115,12 @@ function addClubMarkers(map) {
 
 function formatForDisplay(club) {
     return club.Identification.Name
-            + ' - <em>Area ' + club.Classification.Division.Name + parseInt(club.Classification.Area.Name).toString() + '</em>&nbsp;';
+            + ' - <em>Area ' + getAreaName(club) + '</em>&nbsp;';
+}
+
+
+function getAreaName(club) {
+  return club.Classification.Division.Name + parseInt(club.Classification.Area.Name).toString();
 }
 
 
@@ -147,11 +150,12 @@ function getCenter(clubInfo) {
 function getColour(club) {
     var division = getDivision(club.Classification.Division.Name)
     var hue = division !== null ? division.hue : 0;
-    var area = getArea(club.Classification.Area.Name)
+    var area = getArea(getAreaName(club));
     var lightness = getAreaLightness(area);
     var saturation = 1;
     return "hsl(" + hue + ", " + saturation * 100 + "%, " + lightness * 100 + "%)";
 }
+
 
 function getAreaLightness(area) {
     return area !== null ? area.lightness : 0.75;
@@ -178,12 +182,12 @@ function initialiseDistrictData() {
             divisions.push(division);
         }
 
-
-        if (getArea(clubInfo.Clubs[i].Classification.Area.Name) !== null) {
+        var areaName = getAreaName(clubInfo.Clubs[i])
+        if (getArea(areaName) !== null) {
             continue;
         }
         var area = new Object();
-        area.name = clubInfo.Clubs[i].Classification.Area.Name;
+        area.name = areaName;
         division.areas.push(area);
         areas.push(area);
     }
@@ -215,8 +219,6 @@ function initialiseColours() {
         log('Cannot initialise colours - no club data');
         return;
     }
-
-    // DIVISION HUES
     var divisionCount = divisions.length;
     for (var d = 0; d < divisionCount; d++) {
         divisions[d].hue = d * 360.0/divisionCount;
