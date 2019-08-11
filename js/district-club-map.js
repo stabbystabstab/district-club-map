@@ -26,6 +26,18 @@ function setMapParameters(mapParams) {
     params = mapParams;
 }
 
+/**
+ * Runs the [fn] function once the document is ready or it adds it to the event listener for when
+ * the document is ready
+ * @param {Function} fn Function to be ran
+ */
+function ready(fn) {
+    if (document.readyState != 'loading') {
+        fn();
+    } else {
+        document.addEventListener('DOMContentLoaded', fn);
+    }
+}
 
 $(document).ready(function () {
     getClubInfo();
