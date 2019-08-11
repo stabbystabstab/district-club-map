@@ -39,13 +39,16 @@ function ready(fn) {
     }
 }
 
-$(document).ready(function () {
+ready(() => {
     getClubInfo();
-    $('body').append(
-        $('<script>', {
-            src:'https://maps.googleapis.com/maps/api/js?key='
-                + params.googleMapsAPIKey
-                + '&callback=clubMap'}));
+
+    //We create the Script tag
+    const googleMapsScriptElement = document.createElement('script');
+    googleMapsScriptElement.src = 'https://maps.googleapis.com/maps/api/js?' +
+        `key=${params.googleMapsAPIKey}&callback=clubMap`;
+
+    //Append the Script tag to the body
+    document.getElementsByTagName('body')[0].appendChild(googleMapsScriptElement);
 });
 
 
