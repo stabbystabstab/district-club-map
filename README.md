@@ -1,6 +1,20 @@
 # District Club Map
 This small JavaScript Project has been created to help Toastmasters members from around the world visualise how their Toastmasters District is organised geographically.
 
+## TLDR;
+Copy and paste this, just specify your district and Google Maps API key:
+```html
+<div id="district-club-map" style="width:100%; height:100%"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0/js/district-club-map.js"></script>
+<script>
+  var mapParameters = new DistrictClubMap();
+  mapParameters.district = 73; // YOUR DISTRICT NUMBER GOES HERE
+  mapParameters.googleMapsAPIKey = 'YOUR GOOGLE MAPS API KEY GOES HERE';
+  setMapParameters(mapParameters);
+</script>
+```
+
 ## How to Install:
 
 1. Register for a Google Maps API key and restrict it for use on the domain of your website.
@@ -34,20 +48,6 @@ This small JavaScript Project has been created to help Toastmasters members from
 And you're done.
 
 Example here (it's my book blog and it's embarassing, so please do not read!): http://www.bookninja.org/index.php/toastmasters-club-map-district-73/
-
-## TLDR;
-Copy and paste this, just specify your district and Google Maps API key:
-```html
-<div id="district-club-map" style="width:100%; height:100%"></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0/js/district-club-map.js"></script>
-<script>
-  var mapParameters = new DistrictClubMap();
-  mapParameters.district = 73; // YOUR DISTRICT NUMBER GOES HERE
-  mapParameters.googleMapsAPIKey = 'YOUR GOOGLE MAPS API KEY GOES HERE';
-  setMapParameters(mapParameters);
-</script>
-```
 
 
 P.S. My JavaScript is average at best, so please make a pull request if you think you can improve this!!
