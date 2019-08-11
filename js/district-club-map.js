@@ -53,7 +53,7 @@ ready(() => {
 
 
 var clubInfo;
-function getClubInfo() {
+async function getClubInfo() {
     console.log('getting club info');
     var url = 'https://www.toastmasters.org/api/sitecore/FindAClub/Search';
     $.get(
