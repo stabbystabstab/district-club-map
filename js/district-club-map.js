@@ -26,35 +26,63 @@ function setMapParameters(mapParams) {
     params = mapParams;
 }
 
+/**
+ * Runs the [fn] function once the document is ready or it adds it to the event listener for when
+ * the document is ready
+ * @param {Function} fn Function to be ran
+ */
+function ready(fn) {
+    if (document.readyState != 'loading') {
+        fn();
+    } else {
+        document.addEventListener('DOMContentLoaded', fn);
+    }
+}
 
-$(document).ready(function () {
+ready(() => {
     getClubInfo();
-    $('body').append(
-        $('<script>', {
-            src:'https://maps.googleapis.com/maps/api/js?key='
-                + params.googleMapsAPIKey
-                + '&callback=clubMap'}));
+
+    //We create the Script tag
+    const googleMapsScriptElement = document.createElement('script');
+    googleMapsScriptElement.src = 'https://maps.googleapis.com/maps/api/js?' +
+        `key=${params.googleMapsAPIKey}&callback=clubMap`;
+
+    //Append the Script tag to the body
+    document.getElementsByTagName('body')[0].appendChild(googleMapsScriptElement);
 });
 
 
 var clubInfo;
-function getClubInfo() {
+async function getClubInfo() {
     console.log('getting club info');
-    var url = 'https://www.toastmasters.org/api/sitecore/FindAClub/Search';
-    $.get(
-        params.corsProxy + url,
-        {
-            district: params.district,
-            advanced: 1,
-            latitude: 1, // api breaks when zero or missing
-            longitude: 1, // api breaks when zero or missing
-        },
-        function(data) {
-            console.log('Club information retrieved for District ' + params.district);
-            clubInfo = data;
-        },
-        'json'
-    );
+
+    const url = `${params.corsProxy}https://www.toastmasters.org/api/sitecore/FindAClub/Search`;
+    const body = {
+        district: params.district,
+        advanced: 1,
+        latitude: 1, // api breaks when zero or missing
+        longitude: 1, // api breaks when zero or missing
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (response.status !== 200) {
+            console.error("Error while fetching the club information", response);
+            return;
+        }
+
+        const data = await response.json();
+        console.log('Club information retrieved for District ', params.district);
+        clubInfo = data;
+
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
 }
 
 
