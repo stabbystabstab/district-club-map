@@ -26,7 +26,7 @@ Copy and paste this, just specify your district and Google Maps API key:
 3. Import the desired verion of this file: https://github.com/stabbystabstab/district-club-map/blob/master/js/district-club-map.js
   You can save it as a resource and load it from your application server, or you can load it from github using a service like jsdeliver:
   ```html
-<script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0/js/district-club-map.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0.1/js/district-club-map.js"></script>
 ````
 
 4. Add this JS somewhere on the same page, specifying your Google Maps API Key:
