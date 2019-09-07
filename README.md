@@ -5,7 +5,6 @@ This small JavaScript Project has been created to help Toastmasters members from
 Copy and paste this, just specify your district and Google Maps API key:
 ```html
 <div id="district-club-map" style="width:100%; height:100%"></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0/js/district-club-map.js"></script>
 <script>
   var mapParameters = new DistrictClubMap();
@@ -24,12 +23,7 @@ Copy and paste this, just specify your district and Google Maps API key:
 <div id="district-club-map" style="width:100%; height:100%"></div>
 ```
 
-3. Import jQuery resource for Google Maps:
-```html
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-```
-
-4. Import the desired verion of this file: https://github.com/stabbystabstab/district-club-map/blob/master/js/district-club-map.js
+3. Import the desired verion of this file: https://github.com/stabbystabstab/district-club-map/blob/master/js/district-club-map.js
   You can save it as a resource and load it from your application server, or you can load it from github using a service like jsdeliver:
   ```html
 <script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0/js/district-club-map.js"></script>
@@ -50,6 +44,6 @@ And you're done.
 Example here (it's my book blog and it's embarassing, so please do not read!): http://www.bookninja.org/index.php/toastmasters-club-map-district-73/
 
 
-P.S. My JavaScript is average at best, so please make a pull request if you think you can improve this!!
+P.S. My JavaScript is pretty average, so please make a pull request if you think you can improve this!!
 
 
