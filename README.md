@@ -5,7 +5,7 @@ This small JavaScript Project has been created to help Toastmasters members from
 Copy and paste this, just specify your district and Google Maps API key:
 ```html
 <div id="district-club-map" style="width:100%; height:100%"></div>
-<script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0/js/district-club-map.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/stabbystabstab/district-club-map@1.0.1/js/district-club-map.js"></script>
 <script>
   var mapParameters = new DistrictClubMap();
   mapParameters.district = 73; // YOUR DISTRICT NUMBER GOES HERE
