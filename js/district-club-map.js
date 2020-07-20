@@ -1,7 +1,6 @@
 /**
  * District Club Map
- * Licenced under the MIT Licence
- *         Which means you can do whatever you like with this code, as long as you also let other people do whatever they like with whatever you create.
+ * Available for use under the MIT Licence
  * https://github.com/stabbystabstab/district-club-map
  * @author Matthew Welch - Mount Barker Toastmasters Club (1599760) - District 73
  */
@@ -13,24 +12,16 @@ DistrictClubMap.prototype = {
     corsProxy: 'https://cors-anywhere.herokuapp.com/'
 };
 
-
 function DistrictClubMap() {}
 
-
-var params
+var params;
 var markerDepth = -5000;
 var infoDepth = 5000;
-
 
 function setMapParameters(mapParams) {
     params = mapParams;
 }
 
-/**
- * Runs the [fn] function once the document is ready or it adds it to the event listener for when
- * the document is ready
- * @param {Function} fn Function to be ran
- */
 function ready(fn) {
     if (document.readyState != 'loading') {
         fn();
@@ -41,16 +32,11 @@ function ready(fn) {
 
 ready(() => {
     getClubInfo();
-
-    //We create the Script tag
     const googleMapsScriptElement = document.createElement('script');
     googleMapsScriptElement.src = 'https://maps.googleapis.com/maps/api/js?' +
         `key=${params.googleMapsAPIKey}&callback=clubMap`;
-
-    //Append the Script tag to the body
     document.getElementsByTagName('body')[0].appendChild(googleMapsScriptElement);
 });
-
 
 var clubInfo;
 async function getClubInfo() {
@@ -85,7 +71,6 @@ async function getClubInfo() {
     }
 }
 
-
 function clubMap() {
     if (clubInfo !== undefined) {
         initialiseDistrictData();
@@ -102,7 +87,6 @@ function clubMap() {
     }
     setTimeout(clubMap, 1000);
 }
-
 
 function addClubMarkers(map) {
     for (var i = 0; i < clubInfo.Clubs.length; i++) {
@@ -140,17 +124,14 @@ function addClubMarkers(map) {
     }
 }
 
-
 function formatForDisplay(club) {
     return club.Identification.Name
             + ' - <em>Area ' + getAreaName(club) + '</em>&nbsp;';
 }
 
-
 function getAreaName(club) {
   return club.Classification.Division.Name + parseInt(club.Classification.Area.Name).toString();
 }
-
 
 function getCenter(clubInfo) {
     var longitudeSum = 0;
@@ -174,7 +155,6 @@ function getCenter(clubInfo) {
     return {latitude: latitudeSum/count, longitude: longitudeSum/count};
 }
 
-
 function getColour(club) {
     var division = getDivision(club.Classification.Division.Name)
     var hue = division !== null ? division.hue : 0;
@@ -184,26 +164,23 @@ function getColour(club) {
     return "hsl(" + hue + ", " + saturation * 100 + "%, " + lightness * 100 + "%)";
 }
 
-
 function getAreaLightness(area) {
     return area !== null ? area.lightness : 0.75;
 }
-
 
 function Division(name) {
     this.name = name;
 }
 
-
-var divisions = new Array();
-var areas = new Array();
+var divisions;
+var areas;
 function initialiseDistrictData() {
+    divisions = new Array();
+    areas = new Array();
     for (var i = 0; i < clubInfo.Clubs.length; i++) {
 
-        var division;
-        if (getDivision(clubInfo.Clubs[i].Classification.Division.Name) !== null) {
-            division = getDivision(clubInfo.Clubs[i].Classification.Division.Name);
-        } else {
+        var division = getDivision(clubInfo.Clubs[i].Classification.Division.Name);
+        if (!division) {
             division = new Object();
             division.name = clubInfo.Clubs[i].Classification.Division.Name;
             division.areas = new Array();
@@ -221,7 +198,6 @@ function initialiseDistrictData() {
     }
 }
 
-
 function getDivision(name) {
     for (var i = 0; i < divisions.length; i++) {
         if (divisions[i].name == name) {
@@ -231,7 +207,6 @@ function getDivision(name) {
     return null;
 }
 
-
 function getArea(name) {
     for (var i = 0; i < areas.length; i++) {
         if (areas[i].name == name) {
@@ -240,7 +215,6 @@ function getArea(name) {
     }
     return null;
 }
-
 
 function initialiseColours() {
     if (clubInfo == undefined) {
