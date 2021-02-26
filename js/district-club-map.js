@@ -1,5 +1,6 @@
 /**
  * District Club Map
+ * Utilises an AWS API Gateway that triggers a Lambda function in order to override the CORS policy on this: https://www.toastmasters.org/api/sitecore/FindAClub/Search
  * Available for use under the MIT Licence
  * https://github.com/stabbystabstab/district-club-map
  * @author Matthew Welch - Mount Barker Toastmasters Club (1599760) - District 73
@@ -9,7 +10,7 @@ DistrictClubMap.prototype = {
     elementId: 'district-club-map',
     googleMapsAPIKey: null,
     district: null,
-    corsProxy: 'https://cors-anywhere.herokuapp.com/'
+    corsProxy: 'https://4562kgf09e.execute-api.us-west-2.amazonaws.com/default/search-clubs'
 };
 
 function DistrictClubMap() {}
@@ -42,20 +43,10 @@ var clubInfo;
 async function getClubInfo() {
     console.log('getting club info');
 
-    const url = `${params.corsProxy}https://www.toastmasters.org/api/sitecore/FindAClub/Search`;
-    const body = {
-        district: params.district,
-        advanced: 1,
-        latitude: 1, // api breaks when zero or missing
-        longitude: 1, // api breaks when zero or missing
-    };
+    const url = `${params.corsProxy}?district=${params.district}`;
 
     try {
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(body),
-            headers: { "Content-Type": "application/json" }
-        });
+        const response = await fetch(url);
 
         if (response.status !== 200) {
             console.error("Error while fetching the club information", response);
