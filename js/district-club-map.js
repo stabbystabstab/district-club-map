@@ -40,26 +40,20 @@ ready(() => {
 });
 
 var clubInfo;
-async function getClubInfo() {
+function getClubInfo() {
     console.log('getting club info');
-
-    const url = `${params.corsProxy}?district=${params.district}`;
-
-    try {
-        const response = await fetch(url);
-
-        if (response.status !== 200) {
-            console.error("Error while fetching the club information", response);
-            return;
-        }
-
-        const data = await response.json();
-        console.log('Club information retrieved for District ', params.district);
-        clubInfo = data;
-
-    } catch (error) {
-        console.error('Fetch error:', error);
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+    	if (xhr.status >= 200 && xhr.status < 300) {
+            console.log('Club information retrieved for District ', params.district);
+            clubInfo = JSON.parse(xhr.responseText);
+            clubMap();
+    	} else {
+    		console.log('The request failed with code ' + xhr.status);
+    	}
     }
+    xhr.open('GET', `${params.corsProxy}?district=${params.district}`);
+    xhr.send();
 }
 
 function clubMap() {
