@@ -10,6 +10,7 @@ DistrictClubMap.prototype = {
     elementId: 'district-club-map',
     googleMapsAPIKey: null,
     district: null,
+    districtSelect: false,
     corsProxy: 'https://4562kgf09e.execute-api.us-west-2.amazonaws.com/default/search-clubs'
 };
 
@@ -47,7 +48,9 @@ function getClubInfo() {
     	if (xhr.status >= 200 && xhr.status < 300) {
             console.log('Club information retrieved for District ', params.district);
             clubInfo = JSON.parse(xhr.responseText);
-            clubMap();
+            if (districtSelect) {
+                clubMap();
+            }
     	} else {
     		console.log('The request failed with code ' + xhr.status);
     	}
