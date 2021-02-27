@@ -48,7 +48,7 @@ function getClubInfo() {
     	if (xhr.status >= 200 && xhr.status < 300) {
             console.log('Club information retrieved for District ', params.district);
             clubInfo = JSON.parse(xhr.responseText);
-            if (districtSelect) {
+            if (params.districtSelect) {
                 clubMap();
             }
     	} else {
