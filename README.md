@@ -10,6 +10,10 @@ Copy and paste this, just specify your district and Google Maps API key:
   var mapParameters = new DistrictClubMap();
   mapParameters.district = 73; // YOUR DISTRICT NUMBER GOES HERE
   mapParameters.googleMapsAPIKey = 'YOUR GOOGLE MAPS API KEY GOES HERE';
+  mapParameters.elementId = 'district-club-map'; // optional, default = 'district-club-map', id of div element to create map inside of
+  mapParameters.districtSelect = false; // optional, default = false, causes map to be redrawn if a different district is selected.
+  mapParameters.startingZoom = 5; //optional, default = 5, play with this and see what works for your District's geographical size
+  mapParameters.corsProxy = 'https://4562kgf09e.execute-api.us-west-2.amazonaws.com/default/search-clubs', // optional. Add a reference to your own cors tool. Default goes to an AWS Lambda function I created, but who knows, I might stop paying my AWS bill one day! 😜 
   setMapParameters(mapParameters);
 </script>
 ```
@@ -33,7 +37,7 @@ Copy and paste this, just specify your district and Google Maps API key:
   var mapParameters = new DistrictClubMap();
   mapParameters.district = 73; // Your district number
   mapParameters.googleMapsAPIKey = 'YOUR GOOGLE MAPS API KEY GOES HERE';
-  mapParameters.elementId = 'district-club-map'; // optional, default = 'distrcit-club-map', id of div element to create map inside of
+  mapParameters.elementId = 'district-club-map'; // optional, default = 'district-club-map', id of div element to create map inside of
   mapParameters.districtSelect = false; // optional, default = false, causes map to be redrawn if a different district is selected.
   mapParameters.startingZoom = 5; //optional, default = 5, play with this and see what works for your District's geographical size
   mapParameters.corsProxy = 'https://4562kgf09e.execute-api.us-west-2.amazonaws.com/default/search-clubs', // optional. Add a reference to your own cors tool. Default goes to an AWS Lambda function I created, but who knows, I might stop paying my AWS bill one day! 😜 
