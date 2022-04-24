@@ -5,7 +5,7 @@ This small JavaScript Project has been created to help Toastmasters members from
 Copy and paste this, just specify your district and Google Maps API key:
 ```html
 <div id="district-club-map" style="width:100%; height:600px"></div>
-<script src="https://opentm.org/resources/district-club-map/2.0/district-club-map.js"></script>
+<script src="https://bgkj4cti6dxfqtq62uqnt6ht4gkfa2mseccjnsey4pxt3s5e.arweave.net/CZSeCmjw7lhOHt-Ug2fjz4Z-RQaZIghJbImOPvPcukQ"></script>
 <script>
   var mapParameters = new DistrictClubMap();
   mapParameters.district = 73; // YOUR DISTRICT NUMBER GOES HERE
